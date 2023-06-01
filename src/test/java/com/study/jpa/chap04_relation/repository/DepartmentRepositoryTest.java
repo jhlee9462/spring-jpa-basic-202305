@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -85,6 +87,25 @@ class DepartmentRepositoryTest {
         foundDept.getEmployees().forEach(System.out::println);
 
         System.out.println("\n\n\n");
+
+        //then
+    }
+
+    @Test
+    @DisplayName("N+1 문제 발생 예시")
+    void testNPlus1Ex() {
+        //given
+        List<Department> departments = departmentRepository.findAllIncludeEmployees();
+        //when
+        // 부서가 2개인데 3개의 쿼리가 나간다.
+        departments.forEach(d -> {
+            System.out.println("\n\n============사원 리스트=============");
+
+            List<Employee> employees = d.getEmployees();
+            System.out.println(employees);
+
+            System.out.println("\n\n");
+        });
 
         //then
     }
