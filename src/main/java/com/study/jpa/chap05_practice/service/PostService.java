@@ -45,10 +45,14 @@ public class PostService {
     }
 
     public PostDetailResponseDTO getDetail(Long id) {
-        return new PostDetailResponseDTO(postRepository.findById(id)
+        return new PostDetailResponseDTO(getPost(id));
+    }
+
+    private Post getPost(Long id) {
+        return postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(
                         id + "번 게시물이 존재하지 않습니다!"
-                )));
+                ));
     }
 
     public PostDetailResponseDTO insert(final PostCreateDTO dto)
@@ -72,5 +76,24 @@ public class PostService {
         }
 
         return new PostDetailResponseDTO(post);
+    }
+
+    public PostDetailResponseDTO modify(PostModifyDTO dto) {
+
+        // 게시물 조회
+        Post postEntity = getPost(dto.getPostNo());
+
+        // 수정 시작
+        postEntity.setTitle(dto.getTitle());
+        postEntity.setContent(dto.getContent());
+
+        // 수정된 것 저장
+        return new PostDetailResponseDTO(postRepository.save(postEntity));
+    }
+
+    public void remove(Long id) {
+
+        postRepository.delete(getPost(id));
+
     }
 }
