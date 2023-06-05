@@ -8,14 +8,15 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_post")
 @Getter
 @Setter
 @ToString(exclude = {"hashTags"})
-@EqualsAndHashCode(of = {"id"})
 @AllArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @Builder
 public class Post {
@@ -52,4 +53,5 @@ public class Post {
             hashTag.setPost(this);
         }
     }
+
 }
